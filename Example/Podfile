@@ -1,7 +1,0 @@
-source 'https://github.com/CocoaPods/Specs.git'
-use_frameworks!
-
-target 'Koloda_Example', :exclusive => true do
-  pod "Koloda", :path => "../"
-end
-
