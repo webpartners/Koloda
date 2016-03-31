@@ -211,7 +211,7 @@ public class DraggableCardView: UIView {
             var transform = CATransform3DIdentity
             transform = CATransform3DScale(transform, scale, scale, 1)
             transform = CATransform3DRotate(transform, rotationAngle, 0, 0, 1)
-            transform = CATransform3DTranslate(transform, dragDistance.x, dragDistance.y, 0)
+            transform = CATransform3DTranslate(transform, dragDistance.x, 0, 0)
             layer.transform = transform
             
             updateOverlayWithFinishPercent(dragDistance.x / CGRectGetWidth(frame))
@@ -281,7 +281,7 @@ public class DraggableCardView: UIView {
         removeAnimations()
         
         let resetPositionAnimation = POPSpringAnimation(propertyNamed: kPOPLayerTranslationXY)
-        resetPositionAnimation.fromValue = NSValue(CGPoint: CGPoint(x: dragDistance.x, y: dragDistance.y))
+        resetPositionAnimation.fromValue = NSValue(CGPoint: CGPoint(x: dragDistance.x, y: 0))
         resetPositionAnimation.toValue = NSValue(CGPoint: CGPointZero)
         resetPositionAnimation.springBounciness = cardResetAnimationSpringBounciness
         resetPositionAnimation.springSpeed = cardResetAnimationSpringSpeed
