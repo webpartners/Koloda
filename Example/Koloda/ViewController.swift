@@ -19,6 +19,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        kolodaView.backCardDirection = .Top
         kolodaView.dataSource = self
         kolodaView.delegate = self
         

@@ -9,6 +9,10 @@
 import UIKit
 import pop
 
+public enum BackgroundCardDirection:Int {
+    case Top = -1
+    case Bottom = 1
+}
 public enum SwipeResultDirection {
     case None
     case Left
@@ -100,6 +104,8 @@ public class KolodaView: UIView, DraggableCardDelegate {
     private(set) public var countOfCards = 0
     
     public var countOfVisibleCards = defaultCountOfVisibleCards
+    public var backCardDirection:BackgroundCardDirection = .Bottom
+    
     private var visibleCards = [DraggableCardView]()
     private var animating = false
     
@@ -206,15 +212,17 @@ public class KolodaView: UIView, DraggableCardDelegate {
     
     //MARK: Frames
     public func frameForCardAtIndex(index: UInt) -> CGRect {
+        let multiplierDirection:CGFloat = CGFloat(self.backCardDirection.rawValue)
         let bottomOffset:CGFloat = 0
-        let topOffset = backgroundCardsTopMargin * CGFloat(self.countOfVisibleCards - 1)
+        let topMarginBackgroundCards = multiplierDirection * backgroundCardsTopMargin
+        let topOffset = topMarginBackgroundCards * CGFloat(self.countOfVisibleCards - 1)
         let scalePercent = backgroundCardsScalePercent
         let width = CGRectGetWidth(self.frame) * pow(scalePercent, CGFloat(index))
         let xOffset = (CGRectGetWidth(self.frame) - width) / 2
         let height = (CGRectGetHeight(self.frame) - bottomOffset - topOffset) * pow(scalePercent, CGFloat(index))
         let multiplier: CGFloat = index > 0 ? 1.0 : 0.0
         let previousCardFrame = index > 0 ? frameForCardAtIndex(max(index - 1, 0)) : CGRectZero
-        let yOffset = (CGRectGetHeight(previousCardFrame) - height + previousCardFrame.origin.y + backgroundCardsTopMargin) * multiplier
+        let yOffset = multiplierDirection * (CGRectGetHeight(previousCardFrame) - height + (previousCardFrame.origin.y * multiplierDirection) + topMarginBackgroundCards) * multiplier
         let frame = CGRect(x: xOffset, y: yOffset, width: width, height: height)
         
         return frame
